@@ -1,13 +1,19 @@
 import subprocess
 import os
 import re
-from config import LOGS_DIRECTORY
+from config import RESULTS_DIRECTORY, TIMEOUT, MAX_RETRIES
 
 def clean_url(target):
+    """ 
+    Elimina 'http://' o 'https://' y cualquier puerto especificado del target.
     """
-    Elimina 'http://' o 'https://' del target si existe.
-    """
-    return re.sub(r'^https?://', '', target)
+    # Eliminar 'http://' o 'https://'
+    target = re.sub(r'^https?://', '', target)
+    
+    # Eliminar el puerto (ejemplo: :8080)
+    target = re.sub(r':\d+', '', target)
+    
+    return target
 
 def execute_command(command):
     """
@@ -41,7 +47,7 @@ def create_folder(folder_name):
         folder_name = clean_url(folder_name)
 
     # Crear la ruta completa
-    full_path = os.path.join(LOGS_DIRECTORY, folder_name)
+    full_path = os.path.join(RESULTS_DIRECTORY, folder_name)
 
     try:
         # Crear la carpeta si no existe
