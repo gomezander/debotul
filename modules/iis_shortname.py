@@ -17,7 +17,7 @@ def execute_iis_shortname(target):
     RESULTS_FOLDERPATH = RESULTS_DIRECTORY+'/'+ target+'/'
 
     # Guardar el resultado en un archivo
-    save_output_to_file(result, RESULTS_FOLDERPATH + target+'_shortscan'+ RESULTS_FILEEXTENSION)
+    save_output_to_file(result, RESULTS_FOLDERPATH + target+'_shortscan'+ RESULTS_FILEEXTENSION, original_target)
 
     # Restaurar el target original después de iis_shortname
     target = original_target

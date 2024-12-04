@@ -32,7 +32,7 @@ def execute_command(command):
         print(f"Error: {e.stderr.decode('utf-8')}")
         return None
 
-def save_output_to_file(output, filename):
+def save_output_to_file(output, filename, target):
     """
     Guarda la salida de un comando o el resultado de un módulo en un archivo,
     agregando la fecha y hora de la ejecución.
@@ -42,7 +42,7 @@ def save_output_to_file(output, filename):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         # Preparar la cabecera con la fecha
-        header = f"\n{'='*80}\nFecha de ejecución: {timestamp}\n{'='*80}\n"
+        header = f"\n{'='*80}\nFecha de ejecución: {timestamp}\n{'='*80}\nIniciando escaneo para el target: {target}\n{'='*80}\n\n\n"
         
         # Escribir la cabecera y el resultado en el archivo
         with open(filename, 'a') as file:
@@ -55,9 +55,8 @@ def create_folder(folder_name):
     """
     Crea una carpeta en la ruta especificada.
     """
-    # Comprobar si el target tiene http o https y eliminarlo
-    if folder_name.startswith("http://") or folder_name.startswith("https://"):
-        folder_name = clean_url(folder_name)
+    
+    folder_name = clean_url(folder_name)
 
     # Crear la ruta completa
     full_path = os.path.join(RESULTS_DIRECTORY, folder_name)

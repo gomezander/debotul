@@ -18,7 +18,7 @@ def execute_webanalyze(target):
     RESULTS_FOLDERPATH = RESULTS_DIRECTORY+'/'+ target+'/'
 
     # Guardar el resultado en un archivo
-    save_output_to_file(result, RESULTS_FOLDERPATH + target+'_webanalyze'+ RESULTS_FILEEXTENSION)
+    save_output_to_file(result, RESULTS_FOLDERPATH + target+'_webanalyze'+ RESULTS_FILEEXTENSION, original_target)
 
     # Restaurar el target original después de Nmap
     target = original_target

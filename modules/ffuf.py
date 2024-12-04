@@ -32,7 +32,7 @@ def execute_ffuf(target):
     RESULTS_FOLDERPATH = RESULTS_DIRECTORY+'/'+ target+'/'
 
     # Guardar el resultado en un archivo
-    save_output_to_file(output, RESULTS_FOLDERPATH + target+'_ffuf'+ RESULTS_FILEEXTENSION)
+    save_output_to_file(output, RESULTS_FOLDERPATH + target+'_ffuf'+ RESULTS_FILEEXTENSION, original_target)
 
     # Restaurar el target original después de ffuf
     target = original_target
