@@ -1,7 +1,7 @@
 # Configuración general de la herramienta
 
 # Ruta de los logs
-RESULTS_DIRECTORY = "../results/"
+RESULTS_DIRECTORY = "../results"
 
 #Ruta resultados
 

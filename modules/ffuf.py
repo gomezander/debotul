@@ -7,8 +7,14 @@ def execute_ffuf(target):
     Ejecuta FFUF para realizar fuzzing en un sitio web y muestra el progreso por pantalla.
     """
 
+    # Asegurar que la URL tenga una barra al final específicamente para FFUF
+    if not target.endswith('/'):
+        target_with_slash = target + '/'
+    else:
+        target_with_slash = target
+
     # Comando para ejecutar FFUF
-    command = f"ffuf -u {target}/FUZZ -w ../dependencies/ffuf/test.txt -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'"
+    command = f"ffuf -u {target_with_slash}FUZZ -w ../dependencies/ffuf/test.txt -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'"
     print(f"Ejecutando: {command}")
     print(f"")
     # Ejecutar FFUF y mostrar resultados en tiempo real
@@ -28,5 +34,5 @@ def execute_ffuf(target):
     # Guardar el resultado en un archivo
     save_output_to_file(output, RESULTS_FOLDERPATH + target+'_ffuf'+ RESULTS_FILEEXTENSION)
 
-    # Restaurar el target original después de Nmap
+    # Restaurar el target original después de ffuf
     target = original_target

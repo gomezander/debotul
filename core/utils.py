@@ -1,6 +1,7 @@
 import subprocess
 import os
 import re
+from datetime import datetime
 from config import RESULTS_DIRECTORY, TIMEOUT, MAX_RETRIES
 
 def clean_url(target):
@@ -13,6 +14,9 @@ def clean_url(target):
     # Eliminar el puerto (ejemplo: :8080)
     target = re.sub(r':\d+', '', target)
     
+    # Eliminar la barra '/' al final, si está presente
+    target = target.rstrip('/')
+
     return target
 
 def execute_command(command):
@@ -30,10 +34,19 @@ def execute_command(command):
 
 def save_output_to_file(output, filename):
     """
-    Guarda la salida de un comando o el resultado de un módulo en un archivo.
+    Guarda la salida de un comando o el resultado de un módulo en un archivo,
+    agregando la fecha y hora de la ejecución.
     """
     try:
+        # Obtener la fecha y hora actuales
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Preparar la cabecera con la fecha
+        header = f"\n{'='*80}\nFecha de ejecución: {timestamp}\n{'='*80}\n"
+        
+        # Escribir la cabecera y el resultado en el archivo
         with open(filename, 'a') as file:
+            file.write(header)
             file.write(output + "\n")
     except Exception as e:
         print(f"Error al guardar el archivo {filename}: {str(e)}")

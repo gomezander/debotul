@@ -1,5 +1,5 @@
-from core import execute_command, save_output_to_file
-from core import RESULTS_DIRECTORY
+from core import execute_command, save_output_to_file, clean_url
+from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 
 def execute_masscan(target):
     """
