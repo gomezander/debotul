@@ -14,7 +14,7 @@ def execute_ffuf(target):
         target_with_slash = target
 
     # Comando para ejecutar FFUF
-    command = f"ffuf -u {target_with_slash}FUZZ -w ../dependencies/ffuf/test.txt -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'"
+    command = f"ffuf -u {target_with_slash}FUZZ -w ../dependencies/ffuf/allinone.txt -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'"
     print(f"Ejecutando: {command}")
     print(f"")
     # Ejecutar FFUF y mostrar resultados en tiempo real
