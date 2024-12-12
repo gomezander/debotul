@@ -54,7 +54,7 @@ def main():
     Función principal de la herramienta que gestiona la interacción con el usuario
     y la ejecución de los módulos.
     """
-    print("Bienvenido a Diablo\n")
+    print("\nBienvenido a Diablo\n")
 
     # Verificar si el usuario proporcionó un archivo de target o una URL/IP
     if len(sys.argv) < 2:
@@ -85,7 +85,7 @@ def main():
     profile = show_menu()
 
     if profile == "Exit":
-        print("Saliendo de la herramienta...")
+        print("\nSaliendo de la herramienta...")
     elif profile:
         run_profile(profile, valid_targets)
     else:
