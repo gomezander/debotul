@@ -1,40 +1,24 @@
 import os
 import sys
-import time
 import signal
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from modules import execute_masscan
 from modules import execute_nmap
 from modules import execute_netexec
 from modules import execute_enum4linux
-from modules import execute_iis_shortname
 from modules import execute_webanalyze
 from modules import execute_ffuf
 from modules import execute_shcheck
 from modules import execute_testssl
-from utils import execute_command, save_output_to_file, create_folder
+from utils import create_folder,is_valid_ip_or_domain,signal_handler,get_target_from_file
 from menu import show_menu
 from config import RESULTS_DIRECTORY, TIMEOUT, MAX_RETRIES
 
 # Variable global para manejar la interrupción del programa (Ctrl+C)
 interrupted = False
 
-# Manejo de Ctrl+C
-def signal_handler(sig, frame):
-    global interrupted
-    print("\nSaliendo de la herramienta...")
-    interrupted = True
-    sys.exit(0)
-
 # Configurar la señal para Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
-
-def get_target_from_file(target_file):
-    """
-    Lee los targets de un archivo.
-    """
-    with open(target_file, 'r') as file:
-        return [line.strip() for line in file.readlines()]
 
 def run_profile(profile, targets):
     """
@@ -45,14 +29,16 @@ def run_profile(profile, targets):
         print(f"\nIniciando escaneo para el target: {target}")
 
         if profile == "HTTP":
+            # Primero ejecutamos Nmap
+            if not execute_nmap(target):
+                continue  # Si Nmap no encontró puertos abiertos, pasamos al siguiente target
+
             modules = [
-                execute_nmap,
                 execute_webanalyze,
-                execute_shcheck
+                execute_shcheck,
+                execute_testssl,
+                execute_ffuf
             ]
-            if "https" in target:
-                modules.append(execute_testssl)
-            modules.append(execute_ffuf)
         else:
             print("Perfil no reconocido. Omitiendo...")
             continue
@@ -83,13 +69,25 @@ def main():
     else:
         targets = [target_input]
 
+    # Validar si los targets son IPs o dominios válidos
+    valid_targets = []
+    for target in targets:
+        if is_valid_ip_or_domain(target):
+            valid_targets.append(target)
+        else:
+            print(f"Advertencia: '{target}' no es una IP o dominio válido. Se omitirá.")
+
+    if not valid_targets:
+        print("No se encontraron targets válidos. El programa se detendrá.")
+        sys.exit(1)
+
     # Mostrar el menú una sola vez y solicitar elección del perfil
     profile = show_menu()
 
     if profile == "Exit":
         print("Saliendo de la herramienta...")
     elif profile:
-        run_profile(profile, targets)
+        run_profile(profile, valid_targets)
     else:
         print("Opción no válida. Intente nuevamente.")
 
