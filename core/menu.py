@@ -96,7 +96,7 @@ def show_menu():
     for col in banner:
         print(colors.CRED2 + col, end="")
         sys.stdout.flush()
-        time.sleep(0.0025)
+        time.sleep(0.0010)
 
     x = ("""
                     Authors:  xm0d, agarma, at0mic, ander
@@ -106,7 +106,7 @@ def show_menu():
         sys.stdout.flush()
         time.sleep(0.0040)
 
-    y = "\n\t\t          😈 El diablo!😈\n"
+    y = "\n\t\t          😈 El diablo! 😈\n"
     for col in y:
         print(colors.CRED2 + col, end="")
         sys.stdout.flush()
