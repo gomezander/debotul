@@ -1,10 +1,11 @@
 import os
+import subprocess
 from core import execute_command, save_output_to_file, clean_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 
 def execute_ffuf(target):
     """
-    Ejecuta FFUF para realizar fuzzing en un sitio web y muestra el progreso por pantalla.
+    Ejecuta FFUF para realizar fuzzing en un sitio web y guarda únicamente los resultados encontrados.
     """
 
     # Asegurar que la URL tenga una barra al final específicamente para FFUF
@@ -14,25 +15,45 @@ def execute_ffuf(target):
         target_with_slash = target
 
     # Comando para ejecutar FFUF
-    command = f"ffuf -u {target_with_slash}FUZZ -w ../dependencies/ffuf/allinone.txt -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'"
-    print(f"Ejecutando: {command}")
-    print(f"")
-    # Ejecutar FFUF y mostrar resultados en tiempo real
+    command = [
+        "ffuf",
+        "-u", f"{target_with_slash}FUZZ",
+        "-w", "../dependencies/ffuf/allinone.txt",
+        "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
+        "-c",
+        "-v",
+        "-ac"
+    ]
+
+    print(f"Ejecutando: {' '.join(command)}\n")
+
+    # Ejecutar FFUF y capturar únicamente los resultados encontrados
     try:
-        with os.popen(command) as process:
-            output = process.read()
-            print(output)  # Mostrar resultados en pantalla
+        with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:
+            output = ""
+            relevant_lines = []
+            for line in process.stdout:
+                print(line, end="")  # Mostrar cada línea en pantalla en tiempo real
+                output += line
+                # Filtrar líneas relevantes con resultados encontrados
+                if any(keyword in line for keyword in ["[Status:", "[Size:", "[Words:", "[Lines:"]):
+                    relevant_lines.append(line)
     except Exception as e:
         print(f"Error ejecutando FFUF: {e}")
         return
+
     original_target = target
     target = clean_url(target)
 
     # Modificar path para guardar el fichero
-    RESULTS_FOLDERPATH = RESULTS_DIRECTORY+'/'+ target+'/'
+    RESULTS_FOLDERPATH = os.path.join(RESULTS_DIRECTORY, target)
+    os.makedirs(RESULTS_FOLDERPATH, exist_ok=True)
 
-    # Guardar el resultado en un archivo
-    save_output_to_file(output, RESULTS_FOLDERPATH + target+'_ffuf'+ RESULTS_FILEEXTENSION, original_target)
+    # Guardar únicamente los resultados relevantes en un archivo
+    output_file_path = os.path.join(RESULTS_FOLDERPATH, f"{target}_ffuf{RESULTS_FILEEXTENSION}")
+    save_output_to_file("".join(relevant_lines), output_file_path, original_target)
 
     # Restaurar el target original después de ffuf
     target = original_target
+
+

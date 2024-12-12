@@ -14,7 +14,7 @@ def execute_nmap(target):
     target = clean_url(target)
     
     # Ejecutar Nmap
-    command = f"nmap -Pn -sS -sV --min-rate 10000 --max-retries 3 -p 21-25,80,81,443,445,1443,3306,8080,8443 {target} -vv"
+    command = f"nmap -Pn -sS --min-rate 10000 --max-retries 3 -p 80,443 {target} -vv"
     result = execute_command(command)
     
     # Modificar path para guardar el fichero
