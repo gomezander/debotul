@@ -11,5 +11,7 @@ ToDo
 - [ ] Improve UX al lanzar las herramientas.
 - [ ] Modificar módulos en función de si nmap obiene servicio HTTP o HTTPS.
 - [ ] Añadir módulo que compruebe si los resultados de Webanalyze tienen vulnerabilidades abiertas.
+- [ ] Más control de errores.
+- [ ] Añadir un archivo de logs.
 - [ ] Ejecutar módulos específicos (custom profile).
 
