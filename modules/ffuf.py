@@ -1,5 +1,6 @@
 import os
 import subprocess
+import re
 from core import save_output_to_file, clean_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 from datetime import datetime
@@ -76,7 +77,6 @@ def run_ffuf(target_with_slash, original_target, start_time):
         "-w", "../dependencies/ffuf/test.txt",
         "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
         "-c",
-        "-v",
         "-ac"
     ]
 
@@ -90,6 +90,25 @@ def run_ffuf(target_with_slash, original_target, start_time):
             for line in process.stdout:
                 print(line, end="")  # Mostrar cada línea en pantalla en tiempo real
                 output += line
+
+                # Comprobar la condición de duración y solicitudes por segundo
+                if "Duration:" in line and "req/sec" in line:
+                    duration_match = re.search(r"Duration: \[(\d+:\d+:\d+)\]", line)
+                    req_sec_match = re.search(r"(\d+) req/sec", line)
+
+                    if duration_match and req_sec_match:
+                        duration = duration_match.group(1)
+                        req_sec = int(req_sec_match.group(1))
+
+                        # Convertir duración a segundos para comparación
+                        h, m, s = map(int, duration.split(":"))
+                        total_seconds = h * 3600 + m * 60 + s
+
+                        if total_seconds >= 2 and 0 <= req_sec <= 20:
+                            print("\nSaturación del servidor. Deteniendo FFUF y continuando con el siguiente módulo.")
+                            process.terminate()
+                            return
+
                 # Filtrar líneas relevantes con resultados encontrados
                 if any(keyword in line for keyword in ["[Status:", "[Size:", "[Words:", "[Lines:"]):
                     relevant_lines.append(line)
