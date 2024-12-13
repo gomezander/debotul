@@ -29,6 +29,7 @@ def execute_webanalyze(target):
     target = original_target
 
     # Analizar el resultado para decidir si ejecutar IIS Shortname
+
     if "IIS" in result:
         print("Microsoft-IIS detectado. Ejecutando IIS Shortname Scan...")
         execute_iis_shortname(target)

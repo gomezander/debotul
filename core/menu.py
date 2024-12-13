@@ -7,6 +7,17 @@ import random
 import sys
 import time
 
+# Definir códigos de escape ANSI para negrita y colores
+negrita = "\033[1m"
+rojo = "\033[91m"
+verde = "\033[92m"
+amarillo = "\033[93m"
+azul = "\033[94m"
+magenta = "\033[95m"
+cyan = "\033[96m"
+blanco = "\033[97m"
+reset = "\033[0m"
+
 dibujo = [r'''                , ,, ,                              
                 | || |    ,/  _____  \.             
                 \_||_/    ||_/     \_||             
@@ -69,7 +80,7 @@ dibujo = [r'''                , ,, ,
                            '.`.',`,;',',;,.;
                             ',`'.`';',',`',.
                              |     |     |
-                             (     (     | Soc catalana
+                             (     (     | "Soc catalana"
     '''
 ]
 
