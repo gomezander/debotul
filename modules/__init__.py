@@ -3,6 +3,7 @@
 # Puedes importar las funciones principales o clases de cada módulo aquí,
 # para que sea más fácil acceder a ellas sin tener que importar el módulo completo.
 
+from core.utils import verificar_servicios_nmap, construir_targets
 from .wpscan import execute_wpscan
 from .iis_shortname import execute_iis_shortname
 from .masscan import execute_masscan
