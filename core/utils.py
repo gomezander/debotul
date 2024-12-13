@@ -5,6 +5,17 @@ import sys
 from datetime import datetime
 from config import RESULTS_DIRECTORY
 
+# Definir códigos de escape ANSI para negrita y colores
+negrita = "\033[1m"
+rojo = "\033[91m"
+verde = "\033[92m"
+amarillo = "\033[93m"
+azul = "\033[94m"
+magenta = "\033[95m"
+cyan = "\033[96m"
+blanco = "\033[97m"
+reset = "\033[0m"
+
 def clean_url(target):
     """ 
     Elimina 'http://' o 'https://' y cualquier puerto especificado del target.
@@ -25,7 +36,10 @@ def execute_command(command):
     Ejecuta un comando en el sistema operativo y devuelve la salida.
     """
     try:
-        print(f"Ejecutando: {command}")
+        print(f"\n{negrita}{azul}----------------------------------------------------------------------------------------------------")
+        print(f"                                        Herramienta: {command.split()[0]}                                                  ")
+        print(f"{negrita}{azul}----------------------------------------------------------------------------------------------------{reset}")
+        print(f"\n{negrita}Ejecutando: {command}{reset}")
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return result.stdout.decode('utf-8')
     except subprocess.CalledProcessError as e:

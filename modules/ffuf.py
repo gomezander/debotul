@@ -5,6 +5,17 @@ from core import save_output_to_file, clean_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 from datetime import datetime
 
+# Definir códigos de escape ANSI para negrita y colores
+negrita = "\033[1m"
+rojo = "\033[91m"
+verde = "\033[92m"
+amarillo = "\033[93m"
+azul = "\033[94m"
+magenta = "\033[95m"
+cyan = "\033[96m"
+blanco = "\033[97m"
+reset = "\033[0m"
+
 def execute_ffuf(target):
     """
     Ejecuta FFUF para realizar fuzzing en un sitio web y guarda únicamente los resultados encontrados.
@@ -80,7 +91,10 @@ def run_ffuf(target_with_slash, original_target, start_time):
         "-ac"
     ]
 
-    print(f"Ejecutando: {' '.join(command)}\n")
+    print(f"\n{negrita}{azul}----------------------------------------------------------------------------------------------------")
+    print(f"                                        Herramienta: ffuf                                                  ")
+    print(f"{negrita}{azul}----------------------------------------------------------------------------------------------------{reset}")
+    print(f"\n{negrita}Ejecutando: {command}{reset}")
 
     # Ejecutar FFUF y capturar únicamente los resultados encontrados
     try:

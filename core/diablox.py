@@ -13,6 +13,17 @@ from modules import execute_testssl
 from utils import create_folder,is_valid_ip_or_domain,signal_handler,get_target_from_file
 from menu import show_menu
 
+# Definir códigos de escape ANSI para negrita y colores
+negrita = "\033[1m"
+rojo = "\033[91m"
+verde = "\033[92m"
+amarillo = "\033[93m"
+azul = "\033[94m"
+magenta = "\033[95m"
+cyan = "\033[96m"
+blanco = "\033[97m"
+reset = "\033[0m"
+
 
 # Variable global para manejar la interrupción del programa (Ctrl+C)
 interrupted = False
@@ -26,7 +37,10 @@ def run_profile(profile, targets):
     """
     for target in targets:
         create_folder(target)
-        print(f"\nIniciando escaneo para el target: {target}")
+        #print(f"\033[91mEste texto está en rojo.\033[0m")
+        print(f"\n{rojo}{negrita}----------------------------------------------------------------------------------------------------{rojo} ")
+        print(f"{rojo}                                           Perfil: {profile}                                                       {rojo}")
+        print(f"{rojo}----------------------------------------------------------------------------------------------------{rojo}{reset} ")
 
         if profile == "HTTP":
             # Primero ejecutamos Nmap
