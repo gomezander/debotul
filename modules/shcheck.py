@@ -1,6 +1,5 @@
 from core import execute_command, save_output_to_file, clean_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
-import re
 import os
 from datetime import datetime
 

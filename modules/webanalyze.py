@@ -1,6 +1,6 @@
 from core import execute_command, save_output_to_file, clean_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
-from modules import execute_iis_shortname
+from modules import execute_iis_shortname, execute_wpscan   
 from datetime import datetime
 
 def execute_webanalyze(target):
@@ -33,4 +33,11 @@ def execute_webanalyze(target):
         print("Microsoft-IIS detectado. Ejecutando IIS Shortname Scan...")
         execute_iis_shortname(target)
     else:
-        print("Microsoft-IIS no detectado. Omitiendo IIS Shortname Scan.")
+        pass
+    
+    # Analizar el resultado para decidir si ejecutar WPScan
+    if "WordPress" in result:
+        print("WordPress detectado. Ejecutando WPScan...")
+        execute_wpscan(target)
+    else:
+        pass

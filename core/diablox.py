@@ -12,7 +12,7 @@ from modules import execute_shcheck
 from modules import execute_testssl
 from utils import create_folder,is_valid_ip_or_domain,signal_handler,get_target_from_file
 from menu import show_menu
-from config import RESULTS_DIRECTORY, TIMEOUT, MAX_RETRIES
+
 
 # Variable global para manejar la interrupción del programa (Ctrl+C)
 interrupted = False

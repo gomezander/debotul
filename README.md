@@ -6,7 +6,7 @@ ToDo
 - [x] Añadir tiempo transcurrido del scanner por módulo.
 - [x] Que fuzz salga por pantalla.
 - [x] Arreglar lo de UTF para el guardado.
-- [ ] Implementar WPScan si Webanalyze detecta un WP.
+- [x] Implementar WPScan si Webanalyze detecta un WP.
 - [ ] Implementar módulo Google Dorking.
 - [ ] Improve UX al lanzar las herramientas.
 - [ ] Modificar módulos en función de si nmap obiene servicio HTTP o HTTPS.

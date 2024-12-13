@@ -105,6 +105,7 @@ def is_valid_ip_or_domain(target):
 def signal_handler(sig, frame):
     global interrupted
     print("\nSaliendo de la herramienta...")
+    print("\n🔥😈 Diablo ha finalizado. Disfruta de la fruta. 😈🔥\n")
     interrupted = True
     sys.exit(0)
 
