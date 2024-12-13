@@ -20,14 +20,7 @@ def clean_url(target):
     """ 
     Elimina 'http://' o 'https://' y cualquier puerto especificado del target.
     """
-    # Eliminar 'http://' o 'https://'
-    target = re.sub(r'^https?://', '', target)
-    
-    # Eliminar el puerto (ejemplo: :8080)
-    target = re.sub(r':\d+', '', target)
-    
-    # Eliminar la barra '/' al final, si está presente
-    target = target.rstrip('/')
+    target = re.sub(r'^https?://|:\d+|/$', '', target)
 
     return target
 
@@ -130,12 +123,65 @@ def get_target_from_file(target_file):
     with open(target_file, 'r') as file:
         return [line.strip() for line in file.readlines()]
 
-def clean_url(target):
-    """Elimina 'http://' o 'https://' y otros elementos innecesarios"""
-    # Eliminar 'http://' o 'https://'
-    target = re.sub(r'^https?://', '', target)
+def verificar_servicios_nmap(target, nmap_result):
+    """
+    Verifica si se encontraron servicios HTTP, HTTPS o SSL/HTTP en el resultado de Nmap.
     
-    # Eliminar la barra '/' al final, si está presente
-    target = target.rstrip('/')
+    Args:
+        nmap_result (str): Resultado de Nmap como cadena de texto.
+        
+    Returns:
+        list: Lista de puertos encontrados junto con el patrón correspondiente.
+    """
+    # Expresiones regulares para buscar los servicios http, https o ssl/http
+    patrones = [
+        (r"(\d+)/tcp\s+open\s+http", 'http'),       # Para http
+        (r"(\d+)/tcp\s+open\s+https", 'https'),     # Para https
+        (r"(\d+)/tcp\s+open\s+ssl/http", 'ssl/http') # Para ssl/http
+    ]
+    
+    # Usar un set para evitar puertos duplicados, pero manteniendo el protocolo
+    puertos_encontrados = {}
 
-    return target
+    # Buscar las coincidencias en el resultado de Nmap
+    for patron, protocolo in patrones:
+        coincidencias = re.findall(patron, nmap_result)
+        for puerto in coincidencias:
+            # Añadir el puerto con su protocolo solo si no está ya en el diccionario
+            puertos_encontrados[puerto] = protocolo
+    
+    # Convertir a lista de tuplas (protocolo, puerto)
+    puertos_unicos = [(protocolo, puerto) for puerto, protocolo in puertos_encontrados.items()]
+    
+       # Pasamos la lista de puertos encontrados a la función construir_targets
+    return construir_targets(target, puertos_unicos)
+
+
+def construir_targets(target, puertos):
+    """
+    Construye los targets para los puertos encontrados según el servicio (http, https, ssl/http).
+    
+    Args:
+        target (str): El nombre del host o dominio.
+        puertos (list): Lista de tuplas con el protocolo y el puerto encontrado.
+        
+    Returns:
+        set: Conjunto de targets construidos.
+    """
+    # Diccionario para mapear los servicios con sus protocolos
+    protocolos = {
+        'http': 'http://',
+        'https': 'https://',
+        'ssl/http': 'https://',  # SSL/HTTP también usa https como protocolo
+    }
+    
+    # Conjunto para almacenar los diferentes targets
+    targets = set()
+    
+    # Construir los targets para cada servicio encontrado
+    for protocolo, puerto in puertos:
+        if protocolo in protocolos:
+            targets.add(f"{protocolos[protocolo]}{target}:{puerto}")
+
+    # Devolver el conjunto de todos los targets construidos
+    return targets

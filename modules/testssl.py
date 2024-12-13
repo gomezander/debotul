@@ -1,4 +1,3 @@
-import os
 from core import execute_command, save_output_to_file, clean_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 from datetime import datetime
@@ -13,28 +12,12 @@ def execute_testssl(target):
         print(f"El target {target} ya tiene el protocolo HTTP, no se ejecutará TestSSL.")
         return  # Si ya tiene http://, no hace nada
 
-    elif target.startswith("https://"):
+    else: 
+        target.startswith("https://")
         print(f"Ejecutando TestSSL con el target HTTPS: {target}")
         # Si tiene https://, ejecutamos TestSSL directamente
         run_testssl(target)
 
-    else:
-        # Si el target no tiene http:// ni https://, comprobamos Nmap
-        nmap_file = f"../results/{target}/{target}_nmap.txt"
-        
-        if os.path.exists(nmap_file):
-            with open(nmap_file, 'r') as file:
-                nmap_output = file.read()
-            
-            # Verificar si el puerto 443 (HTTPS) está abierto
-            if "Discovered open port 443/tcp" in nmap_output:
-                print(f"El puerto 443 (HTTPS) está abierto en {target}. Ejecutando TestSSL con HTTPS.")
-                https_target = f"https://{target}"
-                run_testssl(https_target)
-            else:
-                print(f"No se encontró el puerto 443 abierto en el archivo de Nmap para {target}. No se ejecuta TestSSL.")
-        else:
-            print(f"No se encontró el archivo de Nmap para {target}. No se ejecuta TestSSL.")
 
 def run_testssl(target):
     """Ejecuta TestSSL con la URL proporcionada y guarda el tiempo transcurrido"""

@@ -44,8 +44,9 @@ def run_profile(profile, targets):
 
         if profile == "HTTP":
             # Primero ejecutamos Nmap
-            if not execute_nmap(target):
-                continue  # Si Nmap no encontró puertos abiertos, pasamos al siguiente target
+            targets_construidos = execute_nmap(target)
+            if not targets_construidos:
+                continue  # Si Nmap no encontró puertos abiertos, o no se pudieron construir targets, pasamos al siguiente target
 
             modules = [
                 execute_webanalyze,
@@ -59,9 +60,8 @@ def run_profile(profile, targets):
 
         # Ejecutar módulos secuencialmente
         for module in modules:
-            if interrupted:
-                break
-            module(target)
+            for constructed_target in targets_construidos:
+                module(constructed_target)  # Ejecutamos cada módulo para cada target construido
 
 def main():
     """

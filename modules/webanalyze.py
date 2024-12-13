@@ -18,7 +18,7 @@ def execute_webanalyze(target):
     result = execute_command(command)
 
     target = clean_url(target)
-    
+
     # Modificar path para guardar el fichero
     RESULTS_FOLDERPATH = RESULTS_DIRECTORY + '/' + target + '/'
 
