@@ -125,21 +125,19 @@ def show_menu():
     time.sleep(1)
     print("\n" + colors.ENDC + col)
     print("Seleccione el tipo de reconocimiento que desea realizar:\n")
-    print(" 1. Internal Recon")
-    print(" 2. External Recon")
-    print(" 3. HTTP")
-    print(" 4. Custom")
-    print(" 5. Exit")
+    print(" 1. Broad Scope Recon")
+    print(" 2. HTTP Recon")
+    print(" 3. Custom")
+    print(" 4. Exit")
 
     # Solicitar al usuario que seleccione un perfil
     choice = input("\nIngrese el número correspondiente a su elección: ")
 
     profiles = {
-        '1': 'Internal Recon',
-        '2': 'External Recon',
-        '3': 'HTTP',
-        '4': 'Custom',
-        '5': 'Exit'
+        '1': 'Broad Scope Recon',
+        '2': 'HTTP Recon',
+        '3': 'Custom',
+        '4': 'Exit'
     }
 
     # Validar la opción y retornar el perfil seleccionado

@@ -2,6 +2,7 @@ import subprocess
 import os
 import re
 import sys
+import ipaddress
 from datetime import datetime
 from config import RESULTS_DIRECTORY
 
@@ -18,11 +19,9 @@ reset = "\033[0m"
 
 def clean_url(target):
     """ 
-    Elimina 'http://' o 'https://' y cualquier puerto especificado del target.
+    Elimina 'http://' o 'https://', cualquier puerto especificado y el sufijo CIDR (como /16, /24, etc.) del target.
     """
-    target = re.sub(r'^https?://|:\d+|/$', '', target)
-
-    return target
+    return re.sub(r'^https?://|:\d+|/$', '', re.sub(r'/\d+', '', target))
 
 def execute_command(command):
     """
@@ -185,3 +184,11 @@ def construir_targets(target, puertos):
 
     # Devolver el conjunto de todos los targets construidos
     return targets
+
+def validar_rango_ip(rango_ip):
+    try:
+        # Intenta crear un objeto IP Network a partir del rango proporcionado
+        red = ipaddress.IPv4Network(rango_ip, strict=False)
+        return None
+    except ValueError:
+        return f"El rango {rango_ip} no es válido."
