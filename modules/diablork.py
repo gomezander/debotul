@@ -1,9 +1,13 @@
 import os
 import subprocess
-from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
+from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION, clean_url
 
 
 def execute_diablork(domain):
+
+    original_target = domain
+    domain = clean_url(domain)
+
     # Queries for Google Dorking
     queries = {
         "ADMIN": f"site:{domain} inurl:admin",
@@ -111,7 +115,7 @@ def execute_diablork(domain):
     with open(dorks_file, "w") as file:
         file.write(html_content)
 
-    print("HTML file 'dorks_file' has been created.")
+    print("HTML file " + domain + "_dorks.html has been created.")
     subprocess.run(["firefox", dorks_file])
 
 
