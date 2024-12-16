@@ -11,7 +11,7 @@ def execute_diablork(domain):
     # Queries for Google Dorking
     queries = {
         "ADMIN": f"site:{domain} inurl:admin",
-        "LOGIN": f"site:{domain} inurl:login | inurl:weblogin | inurl:webpanel | inurl:signin | intitle:login | intitle:signin | inurl:secure | inurl: user | inurl:auth",
+        "LOGIN": f"site:{domain} inurl:login | inurl:weblogin | inurl:webpanel | inurl:signin | intitle:login | intitle:signin | inurl:secure | inurl:user | inurl:auth",
         "PORTAL/PANEL": f"site:{domain} inurl:portal | inurl:webportal | inurl:panel | inurl:webpanel",
         "REMOTE": f"site:{domain} inurl:remote",
         "DASHBOARD": f"site:{domain} inurl:dashboard",

@@ -7,7 +7,7 @@ ToDo
 - [x] Que fuzz salga por pantalla.
 - [x] Arreglar lo de UTF para el guardado.
 - [x] Implementar WPScan si Webanalyze detecta un WP.
-- [ ] Implementar módulo Google Dorking.
+- [x] Implementar módulo Google Dorking.
 - [x] Improve UX al lanzar las herramientas.
 - [x] Modificar módulos en función de si nmap obiene servicio HTTP o HTTPS.
 - [ ] Añadir módulo que compruebe si los resultados de Webanalyze tienen vulnerabilidades abiertas.
