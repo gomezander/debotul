@@ -69,11 +69,18 @@ def run_profile(profile, targets):
                 ]
             
             for ip_port in ip_port_list:
-                for module in modules:
-                    try:
-                        module(ip_port)
-                    except Exception as e:
-                        print(f"Error ejecutando {module.__name__} para {ip_port}: {e}")
+                # Separar la IP y el puerto
+                ip, port = ip_port.split(':')
+                port = int(port)  # Convertir a entero para comparación
+
+                if port == 445:
+                    for module in modules:
+                        try:
+                            module(ip_port)
+                        except Exception as e:
+                            print(f"Error ejecutando {module.__name__} para {ip_port}: {e}")
+                else:
+                    print(f"Saltando {ip_port}, puerto 445 no detectado...")
 
         else:
             print("Perfil no reconocido. Omitiendo...")
