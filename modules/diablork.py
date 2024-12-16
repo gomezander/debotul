@@ -104,11 +104,11 @@ def execute_diablork(domain):
 </html>
 """
 
-RESULTS_FOLDERPATH = RESULTS_DIRECTORY+'/'+ domain +'/'
-dorks_file = RESULTS_FOLDERPATH + domain + '_dorks.html'
+    RESULTS_FOLDERPATH = RESULTS_DIRECTORY+'/'+ domain +'/'
+    dorks_file = RESULTS_FOLDERPATH + domain + '_dorks.html'
 
     # Save to HTML file
-    with open("dorks_file", "w") as file:
+    with open(dorks_file, "w") as file:
         file.write(html_content)
 
     print("HTML file 'dorks_file' has been created.")
