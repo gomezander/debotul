@@ -128,7 +128,8 @@ def show_menu():
     print(" 1. Broad Scope Recon")
     print(" 2. HTTP Recon")
     print(" 3. Custom")
-    print(" 4. Exit")
+    print(" 4. Google Dorking")
+    print(" 5. Exit")
 
     # Solicitar al usuario que seleccione un perfil
     choice = input("\nIngrese el número correspondiente a su elección: ")
@@ -137,8 +138,7 @@ def show_menu():
         '1': 'Broad Scope Recon',
         '2': 'HTTP Recon',
         '3': 'Custom',
-        '4': 'Exit'
+        '4': 'Google Dorking',
+        '5': 'Exit'
     }
 
-    # Validar la opción y retornar el perfil seleccionado
-    return profiles.get(choice, None)

@@ -10,6 +10,7 @@ from modules import execute_webanalyze
 from modules import execute_ffuf
 from modules import execute_shcheck
 from modules import execute_testssl
+from modules import execute_diablork
 from utils import create_folder,is_valid_ip_or_domain,signal_handler,get_target_from_file
 from menu import show_menu
 
@@ -79,8 +80,9 @@ def run_profile(profile, targets):
                             module(ip_port)
                         except Exception as e:
                             print(f"Error ejecutando {module.__name__} para {ip_port}: {e}")
-                else:
-                    print(f"Saltando {ip_port}, puerto 445 no detectado...")
+
+        elif profile == "Google Dorking":
+            execute_diablork(target)
 
         else:
             print("Perfil no reconocido. Omitiendo...")
@@ -132,3 +134,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
