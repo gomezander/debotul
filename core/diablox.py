@@ -58,10 +58,22 @@ def run_profile(profile, targets):
             for module in modules:
                 for constructed_target in targets_construidos:
                     module(constructed_target)  # Ejecutamos cada módulo para cada target construido
-                    
+
         elif profile == "Broad Scope Recon":
             #Primero ejecutamos Masscan. Target debe ser un rango. Ej: 192.168.0.0/16
-            execute_masscan(target)
+            ip_port_list = execute_masscan(target)
+
+            modules = [ 
+                    execute_netexec,
+                    execute_enum4linux
+                ]
+            
+            for ip_port in ip_port_list:
+                for module in modules:
+                    try:
+                        module(ip_port)
+                    except Exception as e:
+                        print(f"Error ejecutando {module.__name__} para {ip_port}: {e}")
 
         else:
             print("Perfil no reconocido. Omitiendo...")
