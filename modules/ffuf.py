@@ -75,6 +75,15 @@ def run_ffuf(target_with_slash, original_target, start_time):
 
                         if total_seconds >= 2 and 0 <= req_sec <= 20:
                             print("\nSaturación del servidor. Deteniendo FFUF y continuando con el siguiente módulo.")
+                            # Limpiar y guardar los resultados
+                            target = clean_url(original_target)
+                            RESULTS_FOLDERPATH = os.path.join(RESULTS_DIRECTORY, target)
+                            os.makedirs(RESULTS_FOLDERPATH, exist_ok=True)
+
+                            # Guardar únicamente los resultados relevantes en un archivo
+                            output_file_path = os.path.join(RESULTS_FOLDERPATH, f"{target}_ffuf{RESULTS_FILEEXTENSION}")
+                            save_output_to_file("".join(relevant_lines), output_file_path, original_target, start_time)
+                            original_target = target
                             process.terminate()
                             return
 
