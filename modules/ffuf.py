@@ -1,7 +1,7 @@
 import os
 import subprocess
 import re
-from core import save_output_to_file, clean_url
+from core import save_output_to_file, clean_url,check_effective_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 from datetime import datetime
 
@@ -22,17 +22,22 @@ def execute_ffuf(target):
     """
     start_time = datetime.now()
 
+    effective_target = check_effective_url(target)
+    
     # Asegurar que la URL tenga una barra al final específicamente para FFUF
     if not target.endswith('/'):
         target_with_slash = target + '/'
     else:
         target_with_slash = target
 
-    # Verificar si el target tiene http:// o https://
-    target_with_slash = target if target.endswith('/') else target + '/'
+    if effective_target == target_with_slash:
 
-    # Ejecutar FFUF con el protocolo elegido
-    run_ffuf(target_with_slash, target, start_time)
+        # Verificar si el target tiene http:// o https://
+        target_with_slash = effective_target if effective_target.endswith('/') else effective_target + '/'
+
+        # Ejecutar FFUF con el protocolo elegido
+        print(target_with_slash)
+        run_ffuf(target_with_slash, target, start_time)
 
 def run_ffuf(target_with_slash, original_target, start_time):
     """Ejecuta FFUF con la URL proporcionada"""

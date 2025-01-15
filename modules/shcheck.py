@@ -1,4 +1,4 @@
-from core import execute_command, save_output_to_file, clean_url
+from core import execute_command, save_output_to_file, clean_url,check_effective_url
 from core import RESULTS_DIRECTORY, RESULTS_FILEEXTENSION
 from datetime import datetime
 
@@ -10,10 +10,19 @@ def execute_shcheck(target):
     # Establecer el tiempo de inicio
     start_time = datetime.now()
 
-    # Comprobar si el target tiene http:// o https://
-    command = f"shcheck.py -d {target}"
-    result = execute_command(command)
-    save_results(result, target, target, start_time)
+    effective_target = check_effective_url(target)
+
+    # Asegurar que la URL tenga una barra al final específicamente para FFUF
+    if not target.endswith('/'):
+        target_with_slash = target + '/'
+    else:
+        target_with_slash = target
+
+    if effective_target == target_with_slash:
+        # Comprobar si el target tiene http:// o https://
+        command = f"shcheck.py -d {effective_target}"
+        result = execute_command(command)
+        save_results(result, target, target, start_time)
 
 
 def save_results(result, target, full_target, start_time):

@@ -2,8 +2,11 @@ import subprocess
 import os
 import re
 import sys
+import requests
+import warnings
 import ipaddress
 from datetime import datetime
+from urllib.parse import urlparse
 from config import RESULTS_DIRECTORY
 
 # Definir códigos de escape ANSI para negrita y colores
@@ -21,7 +24,13 @@ def clean_url(target):
     """ 
     Elimina 'http://' o 'https://', cualquier puerto especificado y el sufijo CIDR (como /16, /24, etc.) del target.
     """
-    return re.sub(r'^https?://|:\d+|/$', '', re.sub(r'/\d+', '', target))
+    # Eliminar el esquema (http:// o https://)
+    target = re.sub(r'^https?://', '', target)
+    # Eliminar cualquier puerto especificado (ejemplo: :80)
+    target = re.sub(r':\d+', '', target)
+    # Eliminar cualquier sufijo CIDR (/16, /24, etc.)
+    target = re.sub(r'/\d+', '', target)
+    return target
 
 def execute_command(command):
     """
@@ -192,3 +201,24 @@ def validar_rango_ip(rango_ip):
         return None
     except ValueError:
         return f"El rango {rango_ip} no es válido."
+
+def check_effective_url(target):
+    """
+    Obtiene la URL efectiva después de resolver cualquier redirección.
+    
+    :param target: La URL objetivo a verificar.
+    :return: La URL efectiva después de redirecciones.
+    """
+
+    # Verificar si el dominio es realmente válido
+    try:
+        # Desactivar el warning de SSL no verificado
+        warnings.filterwarnings("ignore", category=requests.packages.urllib3.exceptions.InsecureRequestWarning)
+        # Realiza una solicitud HEAD para obtener información sin descargar todo el contenido
+        response = requests.head(target, allow_redirects=True, timeout=10, verify=False)
+        effective_url = response.url
+        #print(f"[*] Effective URL for {target}: {effective_url}")
+        return effective_url
+    except requests.exceptions.RequestException as e:
+        #print(f"[!] Error checking effective URL for {target}: {e}")
+        return None

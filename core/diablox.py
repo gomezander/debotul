@@ -11,7 +11,7 @@ from modules import execute_ffuf
 from modules import execute_shcheck
 from modules import execute_testssl
 from modules import execute_diablork
-from utils import create_folder,is_valid_ip_or_domain,signal_handler,get_target_from_file
+from utils import create_folder,is_valid_ip_or_domain,signal_handler,get_target_from_file,check_effective_url
 from menu import show_menu
 
 # Definir códigos de escape ANSI para negrita y colores
